@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园AI心理健康陪伴助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "SimSun", sans-serif;
+        }
+
+        body {
+            background: #f8f2e9 url("") no-repeat center;
+            background-size: cover;
+            color: #5c4b40;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .main-box {
+            max-width: 950px;
+            margin: 0 auto;
+            background-color: #fffef9;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 4px 20px rgba(142, 111, 94, 0.15);
+            border: 1px solid #efe2d5;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+            border-bottom: 1px dashed #d9c9b8;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #805f4c;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            margin-top: 8px;
+            color: #a08978;
+            font-size: 15px;
+        }
+
+        /* 导航按钮区 */
+        .nav-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            padding: 10px 18px;
+            background-color: #e8d4c2;
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            color: #6b4f3e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #d4b9a3;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background-color: #cba98f;
+            color: #fff;
+        }
+
+        /* 功能模块通用样式 */
+        .module {
+            display: none;
+            padding: 25px;
+            background-color: #faf4ec;
+            border-radius: 18px;
+            min-height: 280px;
+        }
+
+        .module.show {
+            display: block;
+        }
+
+        .module h2 {
+            font-size: 20px;
+            color: #805f4c;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #cba98f;
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd0c0;
+            border-radius: 10px;
+            background: #fff;
+            font-size: 14px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .operate-btn {
+            padding: 9px 22px;
+            background-color: #b99b82;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .operate-btn:hover {
+            background-color: #a0826b;
+        }
+
+        .result-box {
+            margin-top: 18px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 10px;
+            min-height: 60px;
+        }
+
+        /* 求助热线样式 */
+        .hotline {
+            margin: 20px 0;
+            padding: 20px;
+            background: #ffebe8;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .hotline strong {
+            font-size: 24px;
+            color: #d32f2f;
+        }
+
+        /* 列表样式 */
+        ul {
+            padding-left: 22px;
+            margin: 10px 0;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-box">
+        <!-- 头部标题 -->
+        <div class="header">
+            <h1>校园AI心理健康陪伴助手</h1>
+            <p>AI科技赋能心理守护 | 践行五育并举 呵护青少年心灵成长</p>
+        </div>
+
+        <!-- 导航按钮 -->
+        <div class="nav-bar">
+            <button class="nav-btn active" onclick="switchModule('emo')">AI情绪识别</button>
+            <button class="nav-btn" onclick="switchModule('chat')">心理疏导问答</button>
+            <button class="nav-btn" onclick="switchModule('relax')">放松呼吸训练</button>
+            <button class="nav-btn" onclick="switchModule('danger')">危机信号识别</button>
+            <button class="nav-btn" onclick="switchModule('help')">12355求助热线</button>
+            <button class="nav-btn" onclick="switchModule('edu')">五育并举知识</button>
+        </div>
+
+        <!-- 1. AI情绪识别模块 -->
+        <div id="emo" class="module show">
+            <h2>AI情绪识别</h2>
+            <textarea id="emoInput" placeholder="请描述你当下的心情、感受或遇到的事情，AI将为你分析情绪状态..."></textarea>
+            <button class="operate-btn" onclick="analysisEmo()">开始情绪分析</button>
+            <div class="result-box" id="emoResult">分析结果将展示在这里</div>
+        </div>
+
+        <!-- 2. 心理疏导问答模块 -->
+        <div id="chat" class="module">
+            <h2>心理疏导问答</h2>
+            <input id="chatInput" placeholder="输入你的心理困惑、学习压力、人际交往问题等">
+            <button class="operate-btn" onclick="chatReply()">咨询AI助手</button>
+            <div class="result-box" id="chatResult">AI回复内容将展示在这里</div>
+        </div>
+
+        <!-- 3. 放松音乐与呼吸训练模块 -->
+        <div id="relax" class="module">
+            <h2>放松音乐 & 呼吸训练</h2>
+            <p style="margin-bottom:15px;">标准呼吸放松法：吸气4秒 → 屏息4秒 → 缓慢呼气6秒，循环练习，舒缓压力与焦虑</p>
+            <button class="operate-btn" onclick="relaxTip()">播放放松引导</button>
+            <div class="result-box" id="relaxResult">引导提示将展示在这里</div>
+        </div>
+
+        <!-- 4. 心理危机信号识别模块 -->
+        <div id="danger" class="module">
+            <h2>心理危机信号识别</h2>
+            <p>当身边同学或自己出现以下表现，说明可能存在心理危机，请及时寻求帮助：</p>
+            <ul>
+                <li>长期情绪低落、悲观消沉，对任何事物失去兴趣</li>
+                <li>睡眠、饮食紊乱，频繁失眠、食欲不振或暴饮暴食</li>
+                <li>自我否定、自卑绝望，反复产生负面想法</li>
+                <li>刻意疏远亲友、封闭自我，拒绝沟通交流</li>
+                <li>出现伤害自己的想法、言语甚至行为</li>
+            </ul>
+            <p style="color:#c62828; margin-top:15px; font-weight:bold;">⚠️ 发现危机信号，请第一时间联系老师、家长或专业心理机构！</p>
+        </div>
+
+        <!-- 5. 12355求助热线模块 -->
+        <div id="help" class="module">
+            <h2>青少年心理求助渠道</h2>
+            <div class="hotline">
+                <p>全国青少年服务热线</p>
+                <strong>12355</strong>
+                <p style="margin-top:8px;">24小时免费心理援助 | 专业咨询师在线陪伴</p>
+            </div>
+            <p>校内求助：学校心理辅导室、班主任、心理健康教师</p>
+            <p>家校协同：及时和家长沟通，共同疏导心理困扰</p>
+        </div>
+
+        <!-- 6. 五育并举与心理健康模块 -->
+        <div id="edu" class="module">
+            <h2>五育并举与青少年心理健康</h2>
+            <p>五育并举即<strong>德育、智育、体育、美育、劳育</strong>全面发展，是国家青少年培养核心政策。</p>
+            <ul>
+                <li>心理健康是五育融合的基础，健全的人格能助力品德修养、学业进步。</li>
+                <li>积极心态、情绪管理能力，帮助学生适应集体生活，实现全面发展。</li>
+                <li>校园心理筛查、心理辅导、危机干预，是落实五育并举的重要配套工作。</li>
+                <li>坚持家校社协同育人，全方位守护青少年身心健康成长。</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 切换功能模块
+        function switchModule(id) {
+            // 隐藏所有模块
+            let modules = document.querySelectorAll('.module');
+            modules.forEach(item => {
+                item.classList.remove('show');
+            });
+            // 取消按钮激活状态
+            let btns = document.querySelectorAll('.nav-btn');
+            btns.forEach(item => {
+                item.classList.remove('active');
+            });
+            // 显示选中模块
+            document.getElementById(id).classList.add('show');
+            event.target.classList.add('active');
+        }
+
+        // AI情绪分析模拟
+        function analysisEmo() {
+            let input = document.getElementById('emoInput').value.trim();
+            let resBox = document.getElementById('emoResult');
+            if (input === "") {
+                resBox.innerText = "请先输入你的心情和感受哦！";
+                return;
+            }
+            // 简单关键词匹配模拟AI识别
+            if (input.includes("难过") || input.includes("低落") || input.includes("不开心")) {
+                resBox.innerText = "AI识别结果：当前情绪偏向低落、伤感。建议多和朋友倾诉，也可以试试呼吸放松训练，调整状态~";
+            } else if (input.includes("焦虑") || input.includes("压力") || input.includes("烦躁")) {
+                resBox.innerText = "AI识别结果：当前存在焦虑、压力过大的状态。适度放松，合理拆分目标，不要给自己过多负担。";
+            } else if (input.includes("开心") || input.includes("快乐") || input.includes("顺利")) {
+                resBox.innerText = "AI识别结果：情绪积极愉悦，状态良好！继续保持乐观的心态哦。";
+            } else {
+                resBox.innerText = "AI识别结果：情绪状态平稳。日常多关注自身感受，学会调节情绪，保持身心健康。";
+            }
+        }
+
+        // 心理问答模拟回复
+        function chatReply() {
+            let input = document.getElementById('chatInput').value.trim();
+            let resBox = document.getElementById('chatResult');
+            if (input === "") {
+                resBox.innerText = "请输入你的困惑，我来为你解答~";
+                return;
+            }
+            resBox.innerText = "AI助手：收到你的问题啦。遇到烦恼是成长的常态，试着换个角度看待问题，也可以多和身边人沟通。如果困扰难以排解，记得联系心理老师或拨打12355求助热线。";
+        }
+
+        // 放松训练引导
+        function relaxTip() {
+            let resBox = document.getElementById('relaxResult');
+            resBox.innerText = "放松引导：请找安静的环境坐好，双肩下沉，闭上眼睛。跟随节奏：吸气4秒 → 屏住呼吸4秒 → 缓缓呼气6秒，重复5组，慢慢平复身心。";
+        }
+    </script>
+</body>
+</html>
